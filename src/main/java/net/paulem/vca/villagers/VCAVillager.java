@@ -23,8 +23,6 @@ public class VCAVillager {
     private UUID worldUuid;
 
     @Getter
-    private Villager.Profession profession;
-    @Getter
     private Mood mood;
     @Getter
     private Personality personality;
@@ -38,7 +36,6 @@ public class VCAVillager {
         this.uuid = villager.getUniqueId();
         this.worldUuid = villager.getWorld().getUID();
 
-        this.profession = villager.getProfession();
         this.mood = Mood.NEUTRAL;
         this.personality = Personality.NORMAL;
     }
@@ -60,8 +57,12 @@ public class VCAVillager {
         return foundEntity instanceof Villager villager ? villager : null;
     }
 
+    public Villager.Profession getProfession() {
+        return get().getProfession();
+    }
+
     public Component getProfessionComponent() {
-        String professionName = profession.equals(Villager.Profession.NONE) ? "Unemployed" : StringUtils.capitalize(profession.getKey().getKey());
+        String professionName = getProfession().equals(Villager.Profession.NONE) ? "Unemployed" : StringUtils.capitalize(getProfession().getKey().getKey());
         return Component.text(professionName).color(TextColor.color(0xFFFFFF));
     }
 
