@@ -1,0 +1,7 @@
+name: Villagers-Comes-Alive
+version: ${version}
+main: net.paulem.vca.VCA
+api-version: 1.21
+authors: [Paulem]
+load: STARTUP
+softdepend: [Named-Villagers]
