@@ -2,6 +2,7 @@ package net.paulem.vca.dialogs;
 
 import io.papermc.paper.registry.data.dialog.ActionButton;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -28,6 +29,7 @@ import java.util.function.Function;
  * @param <T> The type of the context object that determines the button's visibility and provides
  *            additional data for the button's action.
  */
+@ApiStatus.Experimental
 public record DynamicButton<T>(Function<T, Boolean> condition, @Nullable DynamicDialogAction<T> action, Component title,
                                int width) {
     public boolean shouldShow(T context) {

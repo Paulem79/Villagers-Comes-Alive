@@ -6,8 +6,10 @@ import net.kyori.adventure.text.Component;
 import net.paulem.vca.VCA;
 import net.paulem.vca.codecs.UuidCodec;
 import net.paulem.vca.dialogs.categories.MainMenuCategories;
+import net.paulem.vca.utils.PlayerCapsulator;
 import net.paulem.vca.utils.VillagersUtils;
 import net.paulem.vca.villagers.VCAVillager;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.function.Function;
@@ -20,7 +22,10 @@ import java.util.function.Function;
 public final class Dialogs {
     private Dialogs() {}
 
-    public static final Function<VCAVillager, Dialog> MAIN_VILLAGER_DIALOG = vcaVillager -> {
+    public static final Function<PlayerCapsulator<VCAVillager>, Dialog> MAIN_VILLAGER_DIALOG = playerCapsulator -> {
+        Player player = playerCapsulator.player();
+        VCAVillager vcaVillager = playerCapsulator.data();
+
         DynamicDialog<VCAVillager, VCAVillager> dynamicDialog = new DynamicDialog<>(VCAVillager::getName, true);
 
         List<DynamicButton<VCAVillager>> buttons = List.of(
@@ -43,7 +48,8 @@ public final class Dialogs {
         return dynamicDialog.create(vcaVillager, vcaVillager, List.of(
                 Component.text("Profession : ").append(vcaVillager.getProfessionComponent()),
                 Component.text("Personality : ").append(vcaVillager.getPersonality().getComponent()),
-                Component.text("Mood : ").append(vcaVillager.getMood().getComponent())
+                Component.text("Mood : ").append(vcaVillager.getMood().getComponent()),
+                Component.text("Reputation : ").append(vcaVillager.getReputationComponent(player))
         ), buttons);
     };
 }

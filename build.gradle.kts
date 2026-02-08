@@ -52,8 +52,8 @@ tasks.shadowJar {
 
     relocate("com.github.Anon8281.universalScheduler", "net.paulem.vca.libs.universalScheduler")
     relocate("com.jeff_media.customblockdata", "net.paulem.vca.libs.customblockdata")
-
-    //relocate("net.paulem.aihorde4j", "net.paulem.vca.libs.aihorde4j")
+    relocate("com.github.benmanes.caffeine", "net.paulem.vca.libs.caffeine")
+    relocate("net.paulem.aihorde4j", "net.paulem.vca.libs.aihorde4j")
 }
 
 tasks.build {
@@ -104,6 +104,7 @@ dependencies {
 
     implementation("net.paulem.aihorde4j:AiHorde4J:1.0.2")
 
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
     implementation("org.apache.commons:commons-lang3:3.20.0")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
@@ -120,7 +121,9 @@ dependencies {
 
 tasks.shadowJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    minimize()
+    minimize {
+        exclude(dependency("com.github.ben-manes.caffeine:caffeine"))
+    }
 }
 
 tasks.compileJava {

@@ -1,39 +1,9 @@
 package net.paulem.vca.utils;
 
-import net.paulem.aihorde4j.client.HordeClient;
 import net.paulem.aihorde4j.dto.params.ModelGenerationInputKobold;
-import net.paulem.aihorde4j.dto.response.ActiveModel;
-
-import java.util.List;
 
 public class HordeUtils {
     private HordeUtils() {
-    }
-
-    public static List<String> chooseModels(HordeClient client) {
-        List<ActiveModel> text = client.getActiveModels("text");
-
-        List<String> nonThinkingModels = text.stream()
-                .map(ActiveModel::getName)
-                .filter(name -> !name.toLowerCase().contains("thinking"))
-                .toList();
-
-        List<String> instructModels = nonThinkingModels.stream()
-                .filter(name -> name.toLowerCase().contains("instruct"))
-                .toList();
-
-        if(instructModels.isEmpty()) {
-            if(nonThinkingModels.isEmpty()) {
-                return text
-                        .stream()
-                        .map(ActiveModel::getName)
-                        .toList();
-            }
-
-            return nonThinkingModels;
-        }
-
-        return instructModels;
     }
 
     public static ModelGenerationInputKobold getTextParams() {

@@ -1,13 +1,17 @@
 package net.paulem.vca.villagers;
 
+import com.destroystokyo.paper.entity.villager.ReputationType;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.paulem.vca.VCA;
+import net.paulem.vca.utils.VillagersUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,11 +61,34 @@ public class VCAVillager {
         return foundEntity instanceof Villager villager ? villager : null;
     }
 
+    public ReputationType getReputation(Player player) {
+        Villager villager = get();
+        if(villager == null) throw new IllegalStateException("Villager is not loaded");
+
+        return VillagersUtils.getAverageReputation(player, villager);
+    }
+
+    public Component getReputationComponent(Player player) {
+        ReputationType reputation = getReputation(player);
+        Component color = switch (reputation) {
+            case MAJOR_NEGATIVE -> Component.empty().color(TextColor.color(0xFF0000));
+            case MINOR_NEGATIVE -> Component.empty().color(TextColor.color(0xFFA500));
+            case MINOR_POSITIVE -> Component.empty().color(TextColor.color(0x00FFFF));
+            case MAJOR_POSITIVE -> Component.empty().color(TextColor.color(0x00FF00));
+            case TRADING -> Component.empty().color(TextColor.color(0xFFFFFF));
+        };
+
+        String reputationLabel = StringUtils.capitalize(
+                reputation.name().replace("_", " ").toLowerCase()
+        );
+        return Component.text(reputationLabel).color(color.color());
+    }
+
     public Villager.Profession getProfession() {
         return get().getProfession();
     }
 
-    public Component getProfessionComponent() {
+    public TextComponent getProfessionComponent() {
         String professionName = getProfession().equals(Villager.Profession.NONE) ? "Unemployed" : StringUtils.capitalize(getProfession().getKey().getKey());
         return Component.text(professionName).color(TextColor.color(0xFFFFFF));
     }

@@ -4,6 +4,7 @@ import io.papermc.paper.event.player.PlayerCustomClickEvent;
 import io.papermc.paper.registry.data.dialog.action.DialogAction;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.function.Function;
  *
  * @param <T> The type used to generate additional context or data for the dialog action.
  */
+@ApiStatus.Experimental
 public record DynamicDialogAction<T>(Key key, Consumer<PlayerCustomClickEvent> action,
                                      @Nullable Function<T, BinaryTagHolder> additionsFunc) {
     public static final Map<Key, DynamicDialogAction<?>> REGISTRY = new HashMap<>();

@@ -48,7 +48,7 @@ public class VCA extends JavaPlugin {
 
         scheduler.runTaskTimerAsynchronously(new VillagerDialoguesSchedule(), 20L * 5, 20L * 15);
 
-        scheduler.runTask(() -> {
+        runSync(() -> {
             for (World world : Bukkit.getWorlds()) {
                 for (TextDisplay textDisplay : world.getEntitiesByClass(TextDisplay.class)) {
                     if (textDisplay.getPersistentDataContainer().has(popupKey, PersistentDataType.BOOLEAN)) {
@@ -74,5 +74,9 @@ public class VCA extends JavaPlugin {
 
     public static Key key(String name) {
         return Key.key("vca", name);
+    }
+
+    public static void runSync(Runnable runnable) {
+        getInstance().getScheduler().runTask(runnable);
     }
 }

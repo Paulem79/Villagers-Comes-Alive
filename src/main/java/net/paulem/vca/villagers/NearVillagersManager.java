@@ -9,10 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.BiFunction;
 
 public class NearVillagersManager {
-    private final Map<Player, List<Villager>> villagers = new ConcurrentHashMap<>();
+    private final Map<Player, List<VCAVillager>> villagers = new ConcurrentHashMap<>();
 
     public NearVillagersManager() { /* TODO document why this constructor is empty */ }
 
@@ -24,12 +23,8 @@ public class NearVillagersManager {
         return villagers.keySet();
     }
 
-    public<T> List<T> forEach(BiFunction<Player, List<Villager>, T> function) {
-        return villagers.entrySet().stream().map(entry -> function.apply(entry.getKey(), entry.getValue())).toList();
-    }
-
     @Nullable
-    public Villager pickVillager(Player player) {
+    public VCAVillager pickVillager(Player player) {
         if(!villagers.containsKey(player)) return null;
         if(villagers.get(player).isEmpty()) return null;
 
@@ -41,6 +36,6 @@ public class NearVillagersManager {
     }
 
     public void updateVillagers(Player player, List<Villager> villagers) {
-        this.villagers.put(player, villagers);
+        this.villagers.put(player, villagers.stream().map(VCAVillager::of).toList());
     }
 }

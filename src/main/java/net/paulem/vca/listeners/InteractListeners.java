@@ -4,6 +4,7 @@ import io.papermc.paper.event.player.PlayerCustomClickEvent;
 import lombok.Getter;
 import net.paulem.vca.dialogs.Dialogs;
 import net.paulem.vca.dialogs.DynamicDialogAction;
+import net.paulem.vca.utils.PlayerCapsulator;
 import net.paulem.vca.utils.VillagersUtils;
 import net.paulem.vca.villagers.VCAVillager;
 import org.bukkit.entity.HumanEntity;
@@ -59,7 +60,7 @@ public class InteractListeners implements Listener {
 
         VCAVillager vcaVillager = VCAVillager.of(villager);
 
-        player.showDialog(Dialogs.MAIN_VILLAGER_DIALOG.apply(vcaVillager));
+        player.showDialog(Dialogs.MAIN_VILLAGER_DIALOG.apply(new PlayerCapsulator<>(player, vcaVillager)));
     }
 
     @EventHandler
