@@ -3,10 +3,10 @@ package net.paulem.vca;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import lombok.Getter;
+import net.kyori.adventure.key.Key;
 import net.paulem.aihorde4j.client.HordeClient;
 import net.paulem.vca.listeners.InteractListeners;
 import net.paulem.vca.listeners.VillagersListeners;
-import net.paulem.vca.schedules.PopupSchedulers;
 import net.paulem.vca.schedules.VillagerDialoguesSchedule;
 import net.paulem.vca.listeners.PlayerListeners;
 import net.paulem.vca.villagers.NearVillagersManager;
@@ -47,7 +47,6 @@ public class VCA extends JavaPlugin {
         scheduler = UniversalScheduler.getScheduler(this);
 
         scheduler.runTaskTimerAsynchronously(new VillagerDialoguesSchedule(), 20L * 5, 20L * 15);
-        scheduler.runTaskTimerAsynchronously(new PopupSchedulers.PlayerCheck(), 1L, 1L);
 
         scheduler.runTask(() -> {
             for (World world : Bukkit.getWorlds()) {
@@ -73,4 +72,7 @@ public class VCA extends JavaPlugin {
         getLogger().info("VCA disabled!");
     }
 
+    public static Key key(String name) {
+        return Key.key("vca", name);
+    }
 }

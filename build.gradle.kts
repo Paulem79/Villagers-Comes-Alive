@@ -3,8 +3,9 @@ plugins {
     kotlin("jvm") version "2.+"
 
     id("idea")
-
     id("com.gradleup.shadow")
+
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
 
     id("xyz.jpenilla.run-paper") version "3.0.2"
 }
@@ -94,7 +95,7 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
 
     compileOnly("org.jetbrains:annotations:26.0.2-1")
 
@@ -141,6 +142,14 @@ tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
     }
     jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }
+
+paperweight {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 tasks.processResources {
     val props = mapOf("version" to version)

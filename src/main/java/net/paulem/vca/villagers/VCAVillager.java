@@ -5,13 +5,13 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.paulem.vca.VCA;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class VCAVillager {
 
@@ -27,7 +27,7 @@ public class VCAVillager {
     @Getter
     private Mood mood;
     @Getter
-    private Personality weak;
+    private Personality personality;
 
     public static VCAVillager of(Villager villager) {
         @Nullable VCAVillager cachedVillager = LoadedVillagersManager.getInstance().get(villager);
@@ -40,7 +40,7 @@ public class VCAVillager {
 
         this.profession = villager.getProfession();
         this.mood = Mood.NEUTRAL;
-        this.weak = Personality.NORMAL;
+        this.personality = Personality.NORMAL;
     }
 
     @Nullable
@@ -60,6 +60,11 @@ public class VCAVillager {
         return foundEntity instanceof Villager villager ? villager : null;
     }
 
+    public Component getProfessionComponent() {
+        String professionName = profession.equals(Villager.Profession.NONE) ? "Unemployed" : StringUtils.capitalize(profession.getKey().getKey());
+        return Component.text(professionName).color(TextColor.color(0xFFFFFF));
+    }
+
     public enum Mood {
         HAPPY(Component.text("Happy").color(TextColor.color(0x00FF00))),
         NEUTRAL(Component.text("Neutral").color(TextColor.color(0xFFFF00))),
@@ -75,7 +80,14 @@ public class VCAVillager {
     }
 
     public enum Personality {
-        NORMAL,
-        WEAK;
+        NORMAL(Component.text("Normal").color(TextColor.color(0xFFFFFF))),
+        WEAK(Component.text("Weak").color(TextColor.color(0x00FFFF)));
+
+        @Getter
+        private final Component component;
+
+        Personality(Component component) {
+            this.component = component;
+        }
     }
 }

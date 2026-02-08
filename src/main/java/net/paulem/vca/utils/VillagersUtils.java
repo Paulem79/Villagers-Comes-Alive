@@ -36,4 +36,8 @@ public class VillagersUtils {
                 .findFirst()
                 .orElse(ReputationType.TRADING);
     }
+
+    public static boolean canProfessionTrade(Villager villager) {
+        return villager.getProfession() != Villager.Profession.NONE;
+    }
 }

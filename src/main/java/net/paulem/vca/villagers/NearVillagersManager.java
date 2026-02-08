@@ -2,6 +2,7 @@ package net.paulem.vca.villagers;
 
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,11 @@ public class NearVillagersManager {
         return villagers.entrySet().stream().map(entry -> function.apply(entry.getKey(), entry.getValue())).toList();
     }
 
+    @Nullable
     public Villager pickVillager(Player player) {
+        if(!villagers.containsKey(player)) return null;
+        if(villagers.get(player).isEmpty()) return null;
+
         return villagers.get(player).get(ThreadLocalRandom.current().nextInt(0, villagers.get(player).size()));
     }
 
